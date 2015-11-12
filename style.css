@@ -1,0 +1,59 @@
+body {margin: 0;}
+
+nav
+{
+    line-height: 30px;
+    background-color: #eeeeee;
+    height: 100vh;
+    width: 10vw;
+    padding: 5px;
+    box-sizing: padding-box;
+    position: fixed;
+    top: 0;
+    overflow: auto;
+}
+
+nav ol
+{
+    list-style: decimal;
+    margin: 0 0 0 1.2em;
+    padding: 0;
+}
+
+nav a
+{
+    display: block;
+    color: black;
+    text-decoration: none;
+}
+
+nav li:hover {background: #fafafa;}
+nav li.selected {text-decoration: underline;}
+nav li.error, nav li.error a {text-decoration: line-through; color: darkred;}
+
+#content
+{
+    margin-left: 10vw;
+    padding: 0 1em 0 1em;
+}
+
+#message-box
+{
+    background: darkred;
+    color: white;
+    border-radius: 0 0 1.5em 1.5em;
+    height: 2.5em;
+    left: calc(50% - 12em);
+    position: fixed;
+    text-align: center;
+    top: -2.5em;
+    width: 24em;
+    padding-top: 0.1em;
+    box-sizing: padding-box;
+    transition: top 0.5s;
+}
+
+#message-box.show
+{
+    top: 0em;
+}
