@@ -27,7 +27,8 @@ Before we can make our edits, we must first create a new branch.  This allows us
 
 Now for the creative part.  In the list of files and folders below you will see three main types of files (all other files you can ignore):
 + Files that end in ``\*.md``, these files contain the tutorial text which we call "markdown files";
-+ File(s) named ``contents`` which contains an ordered list of the tutorials; and
++ File(s) named ``contents`` which contains an ordered list of the tutorials;
+![content file](images/contribute-content-file.jpg)
 + Image files, because we deal with plain text, images should get stored separately.
 
 Feel free to take a look around these files.  The markdown files use a fairly intuitive language called markdown, you don't really need to worry about this, many tutorials exist on the internet about it, but don't feel scared.  As you can see it just looks like ordinary text.
