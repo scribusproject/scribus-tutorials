@@ -8,4 +8,8 @@ We first recommend you take the **setting up** tutorial as this will set up the 
 ![Image Alt](images/bcard.png)
 
 ### Feedback
+
+[![Join the chat at https://gitter.im/scribusproject/scribus-tutorials](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/scribusproject/scribus-tutorials?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Do you like what you see, but want to see more?  Do you see mistakes?  Do you see big problems with these tutorials (or even with Scribus itself)?  Then feel free to let us know, or even make the changes yourself.  Everything here comes from the work of volunteers, contributing ideas, content, and code.  We have tried to make it as easy as possible to do so.  Just take a look at the tutorial on how to contribute to learn more about how you can give back to the community.
+
