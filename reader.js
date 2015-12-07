@@ -5,10 +5,9 @@ Navigation = function()
     this.load_page = function(page_name)
     {
         this._loading_page = true;
-        filename = page_name + '.md';
         $.ajax(
             {
-                url: filename,
+                url: page_name,
                 success: function(data){self.set_content_from_md(data, page_name)},
                 error: function(jqXHR, status, error_msg){self.load_failiure(page_name, status, error_msg)}
             }
@@ -22,30 +21,75 @@ Navigation = function()
             nav_item.addClass('error');
         show_msg_box();
         window.location.hash = self._current_page;
-    }
+    };
+
+    this.open_directory = function(dir='', update_hash=true)
+    {
+        var parts = dir.split('/');
+
+        var cdir = '';
+        var children;
+        for (i=0; i < parts.length; i++)
+        {
+            // If we haven't opened this dir already, load it via ajax
+            if ((!cdir && $.isEmptyObject(this._pages)) || (cdir && this._pages[cdir].children('ol').length == 0))
+            {
+                $.ajax(
+                {
+                    url: cdir + 'contents',
+                    success: function(data){self.process_contents_file(data, cdir)},
+                    mimeType: 'text/plain',
+                    async: false
+                });
+            }
+            if (cdir)
+                children = this._pages[cdir].children('ol');
+            cdir += parts[i] + '/';
+        }
+
+        if (update_hash)
+        {
+            window.location.hash = this.get_first_href(children);
+        }
+    };
 
     /**
      * This function loads in a new contents file into the class.
      */
-    this.process_contents_file = function(data)
+    this.process_contents_file = function(data, dir='')
     {
-        this._pages = {};
-        contents = data.split("\n")
+        var first_load = $.isEmptyObject(this._pages);
+        var contents = data.split("\n")
+
+        var parent = dir ? $('<ol></ol>').appendTo(this._pages[dir]) : this.nav_list;
+
         for (var i = 0; i < contents.length; i++)
         {
-            entry = contents[i];
+            entry = contents[i].trim();
             if (entry === "")
                 continue;
 
-            this._pages[entry] = $('<li><a href=#'+ encodeURIComponent(entry) + '>' + entry + '</a></li>').appendTo(this.nav_list);
+            // Format url title
+            var parts = entry.split(' ');
+            var surl = parts.shift();
+            var url = dir + surl;
+            var title = parts.join(' ');
+            this._pages[url] = $('<li><a href=#'+ encodeURIComponent(url) + '>' + title + '</a></li>').appendTo(parent);
+
+            if (url.slice(-1) == '/')
+                this._pages[url].addClass('folder');
         }
 
-        this._home = contents[0];
-        if (this._current_page)
-            this._set_page(this._current_page);
-        else if (!this._loading_page)  // Ajax works asynchronously, let it finish.
-            this.load_page(this._home);
+        if (first_load) // set the home for empty hash
+        {
+            this._home = this.get_first_href(parent);
+        }
     };
+
+    this.get_first_href = function(obj)
+    {
+        return decodeURIComponent($('a', obj.children()[0]).attr('href').substr(1));
+    }
 
     /**
      * This function sets the page in the navigation view only,
@@ -53,21 +97,19 @@ Navigation = function()
      */
     this._set_page = function(page)
     {
-        if (this.page)
-        {
-            this.page.removeClass('selected');
-            this.page = undefined;
-        }
+        var parts = page.split('/');
+        console.log(page, parts);
+        $('.selected', this.nav_list).removeClass('selected');
 
         item = this._pages[page];
         if (item)
         {
             this.page = item;
-            item.addClass('selected');
+            item.parentsUntil(this.nav_list, 'li').addBack().addClass('selected');
         }
         this._current_page = page;
         this._loading_page = false;
-    }
+    };
 
     this.set_content_from_md = function(text, page)
     {
@@ -75,17 +117,23 @@ Navigation = function()
         html = self.converter.makeHtml(text);
         $('#content').html(html);
     };
-    
+
     this.process_hash = function()
     {
         hash = window.location.hash.substring(1);
         if (hash)
         {
-            if (hash != this._current_page)
+            if (hash == this._current_page)
+                return
+            var dir = hash.substr(0, hash.lastIndexOf('/') + 1);
+            var load_page = hash.slice(-1) != '/';
+            this.open_directory(dir, !load_page);
+            if (load_page)  // if dir load new contents file
                 this.load_page(hash)
         }
-        else if (this._home)
+        else
         {
+            this.open_directory('', false);
             this.load_page(this._home)
         }
     }
@@ -94,7 +142,7 @@ Navigation = function()
     this.nav_list = $('nav ol');
     this._loading_page = false;
     this.converter = new showdown.Converter({simplifiedAutoLink: true, ghCodeBlocks: true});
-    this._pages = {}
+    this._pages = {};
     
     $(window).on('hashchange', function()
     {
@@ -102,7 +150,6 @@ Navigation = function()
     });
 
     this.process_hash();
-    $.ajax({url: 'contents', success: function(data){self.process_contents_file(data)}, mimeType: 'text/plain'});
 }
 
 function show_msg_box()
