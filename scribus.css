@@ -1,1 +1,11 @@
 body {font-family: "Libre Baskerville", Georgia, serif;}
+
+nav {background-color: #1d4275; color: white;}
+
+nav a {color: white;}
+
+
+nav > ol > li.selected {background: white;}
+nav > ol > li.selected, nav > ol > li.selected a {color: black;}
+nav .folder.selected .selected::before {content: '>'; float: left; margin: 0 5px 0 3px;}
+nav li:hover a {color: black;}

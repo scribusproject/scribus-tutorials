@@ -6,17 +6,21 @@ nav
     background-color: #eeeeee;
     height: 100vh;
     width: 10vw;
-    padding: 5px;
+    padding: 5px 0;
     box-sizing: padding-box;
     position: fixed;
     top: 0;
     overflow: auto;
 }
 
+nav .logo
+{
+    max-width: 100%;
+}
+
 nav ol
 {
-    list-style: decimal;
-    margin: 0 0 0 1.2em;
+    list-style: none;
     padding: 0;
 }
 
@@ -25,11 +29,19 @@ nav a
     display: block;
     color: black;
     text-decoration: none;
+    padding-left: 3px;
 }
 
-nav li:hover {background: #fafafa;}
-nav li.selected {text-decoration: underline;}
+nav li a:hover {background: #fafafa;}
+nav li.folder.selected > a {text-decoration: underline; font-weight: bold;}
 nav li.error, nav li.error a {text-decoration: line-through; color: darkred;}
+
+nav li {transition: background-color 1s ease;}
+nav li.folder {transition: background-color 2s ease 0.1s;}
+nav li.selected {transition: background-color 1s ease-out;}
+
+nav .folder ol {max-height: 0em; overflow: hidden; transition: max-height 1s ease-in-out;}
+nav .folder.selected ol {max-height: 10em;}
 
 #content
 {
