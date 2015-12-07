@@ -3,4 +3,7 @@
 
 Markdown pages within this repository are displayed on [scribus.io/scribus-tutorials](http://scribus.io/scribus-tutorials)
 
+Notes:
+* If you want to run the scribus-tutorial webpages locally you'll need to use a webserver
+
 More to come soon...
