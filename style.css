@@ -43,7 +43,7 @@ nav li.selected {transition: background-color 1s ease-out;}
 nav .folder ol {max-height: 0em; overflow: hidden; transition: max-height 1s ease-in-out;}
 nav .folder.selected ol {max-height: 10em;}
 
-#content
+#content, #page-footer
 {
     margin-left: 10vw;
     padding: 0 1em 0 1em;
