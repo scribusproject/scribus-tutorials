@@ -20,7 +20,7 @@ Navigation = function()
         if (nav_item)
             nav_item.addClass('error');
         show_msg_box();
-        window.location.hash = self._current_page;
+        window.location.hash = self._current_page ? self._current_page : self._home;
     };
 
     this.open_directory = function(dir='', update_hash=true)
@@ -74,7 +74,7 @@ Navigation = function()
             var surl = parts.shift();
             var url = dir + surl;
             var title = parts.join(' ');
-            this._pages[url] = $('<li><a href=#'+ encodeURIComponent(url) + '>' + title + '</a></li>').appendTo(parent);
+            this._pages[url] = $('<li><a href="#'+ url + '">' + title + '</a></li>').appendTo(parent);
 
             if (url.slice(-1) == '/')
                 this._pages[url].addClass('folder');
@@ -88,7 +88,7 @@ Navigation = function()
 
     this.get_first_href = function(obj)
     {
-        return decodeURIComponent($('a', obj.children()[0]).attr('href').substr(1));
+        return $('a', obj.children()[0]).attr('href').substr(1);
     }
 
     /**
@@ -98,7 +98,6 @@ Navigation = function()
     this._set_page = function(page)
     {
         var parts = page.split('/');
-        console.log(page, parts);
         $('.selected', this.nav_list).removeClass('selected');
 
         item = this._pages[page];
