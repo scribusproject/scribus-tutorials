@@ -23,7 +23,7 @@ Navigation = function()
         window.location.hash = self._current_page ? self._current_page : self._home;
     };
 
-    this.open_directory = function(dir='', update_hash=true)
+    this.open_directory = function(dir, update_hash)
     {
         var parts = dir.split('/');
 
@@ -56,7 +56,7 @@ Navigation = function()
     /**
      * This function loads in a new contents file into the class.
      */
-    this.process_contents_file = function(data, dir='')
+    this.process_contents_file = function(data, dir)
     {
         var first_load = $.isEmptyObject(this._pages);
         var contents = data.split("\n")
